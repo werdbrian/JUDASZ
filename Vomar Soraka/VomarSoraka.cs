@@ -66,7 +66,6 @@ namespace Vomar_Soraka
         }
         private static void GameOnOnGameUpdate(EventArgs args)
         {
-			SmartKs();
             switch (Orbwalker.ActiveMode)
             {
                 case Orbwalking.OrbwalkingMode.Mixed:
@@ -82,6 +81,7 @@ namespace Vomar_Soraka
 					JungleFarm();
                     break;					
             }
+			SmartKs();
             if (Menu.Item("autoW").GetValue<bool>())
             {
                 AutoW();
@@ -236,15 +236,15 @@ namespace Vomar_Soraka
             if (!Menu.Item("smartKS", true).GetValue<bool>())
                 return;
 
-            foreach (Obj_AI_Hero target in ObjectManager.Get<Obj_AI_Hero>().Where(x => x.IsValidTarget(_qe.Range) && x.IsEnemy && !x.IsDead).OrderByDescending(GetComboDamage))
+            foreach (Obj_AI_Hero target in ObjectManager.Get<Obj_AI_Hero>().Where(x => x.IsValidTarget(E.Range) && !x.IsDead && !x.HasBuffOfType(BuffType.Invulnerability)))
             {
+				if (E.IsKillable(target) && Player.Distance(target.Position) < E.Range)
+                {
+                    E.Cast(target);
+                }
                 if (Q.IsKillable(target) && Player.Distance(target.Position) < Q.Range)
                 {
                     Q.Cast(target);
-                }
-                if (E.IsKillable(target) && Player.Distance(target.Position) < E.Range)
-                {
-                    E.Cast(target);
                 }
             }
         }
