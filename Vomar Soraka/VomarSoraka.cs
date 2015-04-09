@@ -119,7 +119,7 @@ namespace Vomar_Soraka
                 return;
             }
             var autoWHealth = Menu.Item("autoWHealth").GetValue<Slider>().Value;
-            if (ObjectManager.Player.HealthPercent() < autoWHealth)
+            if (ObjectManager.Player.HealthPercentage() < autoWHealth)
             {
                 return;
             }
