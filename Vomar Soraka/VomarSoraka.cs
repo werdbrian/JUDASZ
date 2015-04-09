@@ -66,7 +66,7 @@ namespace Vomar_Soraka
         }
         private static void GameOnOnGameUpdate(EventArgs args)
         {
-			KillSecure();
+			SmartKs();
             switch (Orbwalker.ActiveMode)
             {
                 case Orbwalking.OrbwalkingMode.Mixed:
@@ -233,25 +233,18 @@ namespace Vomar_Soraka
 		
 		private void SmartKs()
         {
-            if (!menu.Item("smartKS", true).GetValue<bool>())
+            if (!Menu.Item("smartKS", true).GetValue<bool>())
                 return;
 
             foreach (Obj_AI_Hero target in ObjectManager.Get<Obj_AI_Hero>().Where(x => x.IsValidTarget(_qe.Range) && x.IsEnemy && !x.IsDead).OrderByDescending(GetComboDamage))
             {
-                //Q
                 if (Q.IsKillable(target) && Player.Distance(target.Position) < Q.Range)
                 {
                     Q.Cast(target);
                 }
-                //E
                 if (E.IsKillable(target) && Player.Distance(target.Position) < E.Range)
                 {
                     E.Cast(target);
-                }
-                //QE
-                if (E.IsKillable(target) && Player.Distance(target.Position) < _qe.Range)
-                {
-                    Cast_QE(false, target);
                 }
             }
         }

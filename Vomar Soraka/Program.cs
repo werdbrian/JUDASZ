@@ -10,7 +10,7 @@ namespace Vomar_Soraka
     {
         private static void Main(string[] args)
         {
-            CustomEvents.Game.OnGameLoad += SophiesSoraka.OnGameLoad;
+            CustomEvents.Game.OnGameLoad += VomarSoraka.OnGameLoad;
         }
     }
 }
