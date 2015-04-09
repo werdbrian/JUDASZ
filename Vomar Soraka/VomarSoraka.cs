@@ -23,6 +23,7 @@ namespace Vomar_Soraka
         public static Spell R;
         public static Menu Menu;
         public static Orbwalking.Orbwalker Orbwalker;
+		 public static LevelUpManager levelUpManager;
         public static bool Packets
         {
             get { return Menu.Item("packets").GetValue<bool>(); }
@@ -40,6 +41,7 @@ namespace Vomar_Soraka
             Q.SetSkillshot(0.5f, 300, 1750, false, SkillshotType.SkillshotCircle);
             E.SetSkillshot(0.5f, 70f, 1750, false, SkillshotType.SkillshotCircle);
             CreateMenu();
+			InitializeLevelUpManager();
             Interrupter2.OnInterruptableTarget += InterrupterOnOnPossibleToInterrupt;
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloserOnOnEnemyGapcloser;
             Game.OnUpdate += GameOnOnGameUpdate;
@@ -81,7 +83,10 @@ namespace Vomar_Soraka
 					JungleFarm();
                     break;					
             }
-			if (Menu.Item("autoW").GetValue<bool>())
+			
+			levelUpManager.Update();
+			
+			if (Menu.Item("SmartKs").GetValue<bool>())
             {
                 SmartKs();
             }
@@ -250,6 +255,20 @@ namespace Vomar_Soraka
                     Q.Cast(target);
                 }
             }
+        }
+		
+		private static void InitializeLevelUpManager()
+        {
+            if (mustDebug)
+                Game.PrintChat("InitializeLevelUpManager Start");
+
+            var priority1 = new int[] { 1, 3, 2, 1, 1, 4, 1, 3, 1, 3, 4, 3, 3, 2, 2, 4, 2, 2 };
+
+            levelUpManager = new LevelUpManager();
+            levelUpManager.Add("W > Q > E > Q ", priority1);
+
+            if (mustDebug)
+                Game.PrintChat("InitializeLevelUpManager Finish");
         }
 		
         private static void CreateMenu()
