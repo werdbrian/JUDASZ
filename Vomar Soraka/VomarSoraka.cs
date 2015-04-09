@@ -81,7 +81,10 @@ namespace Vomar_Soraka
 					JungleFarm();
                     break;					
             }
-			SmartKs();
+			if (Menu.Item("autoW").GetValue<bool>())
+            {
+                SmartKs();
+            }
             if (Menu.Item("autoW").GetValue<bool>())
             {
                 AutoW();
@@ -231,7 +234,7 @@ namespace Vomar_Soraka
 			}
 		}
 		
-		private void SmartKs()
+		private static void SmartKs()
         {
             if (!Menu.Item("smartKS", true).GetValue<bool>())
                 return;
