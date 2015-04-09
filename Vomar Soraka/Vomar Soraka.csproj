@@ -67,12 +67,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-    <ItemGroup>
-    <ProjectReference Include="..\DevCommom\DevCommom.csproj">
-      <Project>{ef3bb7da-010f-439c-b3e9-f211142daedb}</Project>
-      <Name>DevCommom</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
