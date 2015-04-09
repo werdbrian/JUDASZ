@@ -238,11 +238,11 @@ namespace Vomar_Soraka
 
             foreach (Obj_AI_Hero target in ObjectManager.Get<Obj_AI_Hero>().Where(x => x.IsValidTarget(E.Range) && !x.IsDead && !x.HasBuffOfType(BuffType.Invulnerability)))
             {
-				if (E.IsKillable(target) && Player.Distance(target.Position) < E.Range)
+				if (E.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < E.Range)
                 {
                     E.Cast(target);
                 }
-                if (Q.IsKillable(target) && Player.Distance(target.Position) < Q.Range)
+                if (Q.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < Q.Range)
                 {
                     Q.Cast(target);
                 }
