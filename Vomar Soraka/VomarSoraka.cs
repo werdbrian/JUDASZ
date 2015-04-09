@@ -6,7 +6,7 @@ using System.Linq;
 using Color = System.Drawing.Color;
 using System.Collections.Generic;
 using System.Threading;
-
+using DevCommom;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
@@ -23,7 +23,7 @@ namespace Vomar_Soraka
         public static Spell R;
         public static Menu Menu;
         public static Orbwalking.Orbwalker Orbwalker;
-		 public static LevelUpManager levelUpManager;
+		public static LevelUpManager levelUpManager;
         public static bool Packets
         {
             get { return Menu.Item("packets").GetValue<bool>(); }
