@@ -69,18 +69,18 @@ namespace Vomar_Soraka
             {
                 case Orbwalking.OrbwalkingMode.Mixed:
                     Harass();
-					LaneFarm();
-					JungleFarm();
+		    LaneFarm();
+		    JungleFarm();
                     break;
                 case Orbwalking.OrbwalkingMode.Combo:
                     Combo();
                     break;
-				case Orbwalking.OrbwalkingMode.LaneClear:
-					LaneFarm();
-					JungleFarm();
+		case Orbwalking.OrbwalkingMode.LaneClear:
+		    LaneFarm();
+		    JungleFarm();
                     break;					
             }
-			if (Menu.Item("SmartKs").GetValue<bool>())
+	    if (Menu.Item("SmartKs").GetValue<bool>())
             {
                 SmartKs();
             }
@@ -146,6 +146,7 @@ namespace Vomar_Soraka
             {
                 return;
             }
+            
             if (useQ && Q.IsReady())
             {
                 Q.Cast(target, Packets);
@@ -218,24 +219,24 @@ namespace Vomar_Soraka
                 }
             }
         }
-		private static void LaneFarm()
+	private static void LaneFarm()
         {
-			if (Menu.Item("UseQLane").GetValue<bool>() && Q.IsReady())
+	    if (Menu.Item("UseQLane").GetValue<bool>() && Q.IsReady())
+		{
+			var laneMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
+			List<Vector2> minionerinos2 =
+	(from minions in laneMinions select minions.Position.To2D()).ToList();
+			var ePos2 = MinionManager.GetBestCircularFarmLocation(minionerinos2, Q.Width, Q.Range).Position;
+			if (ePos2.Distance(ObjectManager.Player.Position.To2D()) < Q.Range && MinionManager.GetBestCircularFarmLocation(minionerinos2, Q.Width, Q.Range).MinionsHit > 0)
 			{
-				var laneMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
-				List<Vector2> minionerinos2 =
-		(from minions in laneMinions select minions.Position.To2D()).ToList();
-				var ePos2 = MinionManager.GetBestCircularFarmLocation(minionerinos2, Q.Width, Q.Range).Position;
-				if (ePos2.Distance(ObjectManager.Player.Position.To2D()) < Q.Range && MinionManager.GetBestCircularFarmLocation(minionerinos2, Q.Width, Q.Range).MinionsHit > 0)
-				{
-					Q.Cast(ePos2, Packets);
-				}
+			Q.Cast(ePos2, Packets);
 			}
 		}
+	    }
 		
-		private static void SmartKs()
+	private static void SmartKs()
         {
-            if (!Menu.Item("smartKS", true).GetValue<bool>())
+        if (!Menu.Item("smartKS", true).GetValue<bool>())
                 return;
 
             foreach (Obj_AI_Hero target in ObjectManager.Get<Obj_AI_Hero>().Where(x => x.IsValidTarget(E.Range) && !x.IsDead && !x.HasBuffOfType(BuffType.Invulnerability)))
@@ -244,7 +245,7 @@ namespace Vomar_Soraka
                 {
                     E.Cast(target);
                 }
-                if (Q.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < Q.Range)
+        if (Q.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < Q.Range)
                 {
                     Q.Cast(target);
                 }
@@ -263,7 +264,7 @@ namespace Vomar_Soraka
             comboMenu.AddItem(new MenuItem("useQ", "Use Q").SetValue(true));
             comboMenu.AddItem(new MenuItem("useE", "Use E").SetValue(true));
             Menu.AddSubMenu(comboMenu);
-			var farmMenu = new Menu("Farm", "Farmm");
+	    var farmMenu = new Menu("Farm", "Farmm");
             farmMenu.AddItem(new MenuItem("UseQJungle", "Use Q Jungle").SetValue(true));
             farmMenu.AddItem(new MenuItem("UseQLane", "Use Q Lane").SetValue(true));			
             Menu.AddSubMenu(farmMenu);
@@ -284,7 +285,7 @@ namespace Vomar_Soraka
             miscMenu.AddItem(new MenuItem("autoWPercent", "% Percent").SetValue(new Slider(50, 1)));
             miscMenu.AddItem(new MenuItem("autoWHealth", "My Health Percent").SetValue(new Slider(30, 1)));
             miscMenu.AddItem(new MenuItem("autoR", "Auto use R").SetValue(true));
-			miscMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
+	    miscMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
             miscMenu.AddItem(new MenuItem("autoRPercent", "% Percent").SetValue(new Slider(15, 1)));
             miscMenu.AddItem(new MenuItem("eInterrupt", "Use E to Interrupt").SetValue(true));
             Menu.AddSubMenu(miscMenu);
