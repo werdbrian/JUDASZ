@@ -233,7 +233,7 @@ namespace Vomar_Soraka
                 }
                 if (Q.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < Q.Range)
                 {
-                    Q.CastIfHitChanceEquals(target, HitChance.VeryHigh, Packets);
+                    Q.CastIfHitChanceEquals(target, HitChance.VeryHigh);
                 }
             }
         }
