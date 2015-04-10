@@ -177,8 +177,8 @@ namespace Vomar_Soraka
 		
 		static HitChance WHitChance()
 			{
-			var WHC = Annie.SubMenu("Combo").Item("WHitChance").GetValue<Slider>().Value;
-			if (WHC == 1) { return HitChance.Low; }//Yes I'll Acc 1 And 2 To Low.
+			var WHC = Menu.Item("WHitChance").GetValue<Slider>().Value;
+			if (WHC == 1) { return HitChance.Low; }
 			else if (WHC == 2) { return HitChance.Low; }
 			else if (WHC == 3) { return HitChance.Medium; }
 			else if (WHC == 4) { return HitChance.High; }
@@ -281,6 +281,7 @@ namespace Vomar_Soraka
             comboMenu.AddItem(new MenuItem("useQ", "Use Q").SetValue(true));
             comboMenu.AddItem(new MenuItem("useE", "Use E").SetValue(true));
 			comboMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
+			comboMenu.AddItem(new MenuItem("WHitChance", "Hitchance to KS with Q").SetValue(new Slider(5, 1)));			
             Menu.AddSubMenu(comboMenu);
 			var farmMenu = new Menu("Farm", "vFarm");
             farmMenu.AddItem(new MenuItem("UseQJungle", "Use Q Jungle").SetValue(true));
