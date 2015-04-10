@@ -174,6 +174,17 @@ namespace Vomar_Soraka
                 E.Cast(target, Packets);
             }
         }
+		
+		static HitChance WHitChance()
+			{
+			var WHC = Annie.SubMenu("Combo").Item("WHitChance").GetValue<Slider>().Value;
+			if (WHC == 1) { return HitChance.Low; }//Yes I'll Acc 1 And 2 To Low.
+			else if (WHC == 2) { return HitChance.Low; }
+			else if (WHC == 3) { return HitChance.Medium; }
+			else if (WHC == 4) { return HitChance.High; }
+			else if (WHC == 5) { return HitChance.VeryHigh; }
+			else { return HitChance.High; }
+			}
 
 		private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
@@ -233,7 +244,7 @@ namespace Vomar_Soraka
                 }
                 if (Q.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < Q.Range)
                 {
-                    Q.CastIfHitChanceEquals(target, HitChance.VeryHigh);
+                    Q.CastIfHitchanceEquals(target, HitChance.High);
                 }
             }
         }
