@@ -270,16 +270,12 @@ namespace Vomar_Soraka
             var comboMenu = new Menu("Combo", "vCombo");
             comboMenu.AddItem(new MenuItem("useQ", "Use Q").SetValue(true));
             comboMenu.AddItem(new MenuItem("useE", "Use E").SetValue(true));
-			comboMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
+	    comboMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
             Menu.AddSubMenu(comboMenu);
-<<<<<<< HEAD
-			var farmMenu = new Menu("Farm", "vFarm");
-=======
-	    var farmMenu = new Menu("Farm", "Farmm");
->>>>>>> origin/master
+	    var farmMenu = new Menu("Farm", "vFarm");
             farmMenu.AddItem(new MenuItem("UseQJungle", "Use Q Jungle").SetValue(true));
             farmMenu.AddItem(new MenuItem("UseQLane", "Use Q Lane").SetValue(true));			
-			Menu.AddSubMenu(farmMenu);
+	    Menu.AddSubMenu(farmMenu);
             var harassMenu = new Menu("Harass", "vHarass");
             harassMenu.AddItem(new MenuItem("useQHarass", "Use Q").SetValue(true));
             harassMenu.AddItem(new MenuItem("useEHarass", "Use E").SetValue(true));
@@ -289,38 +285,22 @@ namespace Vomar_Soraka
             drawingMenu.AddItem(new MenuItem("drawW", "Draw W").SetValue(true));
             drawingMenu.AddItem(new MenuItem("drawE", "Draw E").SetValue(true));
             Menu.AddSubMenu(drawingMenu);
-			Menu.AddSubMenu(healingMenu);
+	    Menu.AddSubMenu(healingMenu);
             var healingMenu = new Menu("Healing", "vHealing");
-			healingMenu.AddItem(new MenuItem("autoW", "Auto use W.").SetValue(true));
-			healingMenu.AddItem(new MenuItem("autoR", "Auto use R.").SetValue(true));
-			healingMenu.AddItem(new MenuItem("useTeamfightUltimate", "Auto teamfight R.").SetValue(true));
-			healingMenu.AddItem(new MenuItem("percentage2", "Auto R under team %").SetValue(new Slider(60, 1)));
+	    healingMenu.AddItem(new MenuItem("autoW", "Auto use W.").SetValue(true));
+	    healingMenu.AddItem(new MenuItem("autoR", "Auto use R.").SetValue(true));
+	    healingMenu.AddItem(new MenuItem("useTeamfightUltimate", "Auto teamfight R.").SetValue(true));
+	    healingMenu.AddItem(new MenuItem("percentage2", "Auto R under team %").SetValue(new Slider(60, 1)));
             healingMenu.AddItem(new MenuItem("autoWPercent", "Auto W under %").SetValue(new Slider(50, 1)));
             healingMenu.AddItem(new MenuItem("autoWHealth", "My Health Percent").SetValue(new Slider(40, 1)));
-			healingMenu.AddItem(new MenuItem("autoRPercent", "Auto R under %").SetValue(new Slider(40, 1)));
-			Menu.AddSubMenu(healingMenu);
+	    healingMenu.AddItem(new MenuItem("autoRPercent", "Auto R under %").SetValue(new Slider(40, 1)));
+	    Menu.AddSubMenu(healingMenu);
             var miscMenu = new Menu("Misc", "vMisc");
             miscMenu.AddItem(new MenuItem("packets", "Use Packets").SetValue(true));
-<<<<<<< HEAD
             miscMenu.AddItem(new MenuItem("AntiGapCloser", "E on Gapcloser").SetValue(true));
             miscMenu.AddItem(new MenuItem("InterruptSpells", "Use E to Interrupt").SetValue(true));
-=======
-            miscMenu.AddItem(new MenuItem("useQGapcloser", "Q on Gapcloser").SetValue(true));
-            miscMenu.AddItem(new MenuItem("useEGapcloser", "E on Gapcloser").SetValue(true));
-            miscMenu.AddItem(new MenuItem("autoW", "Auto use W").SetValue(true));
-            miscMenu.AddItem(new MenuItem("autoWPercent", "% Percent").SetValue(new Slider(50, 1)));
-            miscMenu.AddItem(new MenuItem("autoWHealth", "My Health Percent").SetValue(new Slider(30, 1)));
-            miscMenu.AddItem(new MenuItem("autoR", "Auto use R").SetValue(true));
-	    miscMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
-            miscMenu.AddItem(new MenuItem("autoRPercent", "% Percent").SetValue(new Slider(15, 1)));
-            miscMenu.AddItem(new MenuItem("eInterrupt", "Use E to Interrupt").SetValue(true));
->>>>>>> origin/master
             Menu.AddSubMenu(miscMenu);
             Menu.AddToMainMenu();
-        }
-        public static void PrintChat(string msg)
-        {
-            Game.PrintChat("<font color='#3492EB'>Vomars Soraka:</font> <font color='#FFFFFF'>" + msg + "</font>");
         }
     }
 }
