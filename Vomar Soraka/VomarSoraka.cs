@@ -177,18 +177,18 @@ namespace Vomar_Soraka
 
 		private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (!Menu.Item("AntiGapCloser").GetValue<bool>() || !CSpell.E.CanCast(gapcloser.Sender))
+            if (!Menu.Item("AntiGapCloser").GetValue<bool>() || !VomarSoraka.E.CanCast(gapcloser.Sender))
                 return;
 
-            CSpell.E.Cast(gapcloser.Sender);
+            VomarSoraka.E.Cast(gapcloser.Sender);
         }
 
         private static void Interrupter2_OnInterruptableTarget(Obj_AI_Hero sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (!Menu.Item("InterruptSpells").GetValue<bool>() || !CSpell.E.CanCast(sender) || args.DangerLevel != Interrupter2.DangerLevel.High)
+            if (!Menu.Item("InterruptSpells").GetValue<bool>() || !VomarSoraka.E.CanCast(sender) || args.DangerLevel != Interrupter2.DangerLevel.High)
                 return;
 
-            CSpell.E.Cast(sender);
+            VomarSoraka.E.Cast(sender);
         }
 		
 		private static void JungleFarm()
@@ -248,10 +248,10 @@ namespace Vomar_Soraka
 
         internal static void TeamfightUltimate()
         {
-            if (!CConfig.ConfigMenu.Item("useTeamfightUltimate").GetValue<bool>() || !R.IsReady())
+            if (!Menu.Item("useTeamfightUltimate").GetValue<bool>() || !R.IsReady())
                 return;
 
-            if (GetTeamHp < CConfig.ConfigMenu.Item("percentage2").GetValue<Slider>().Value)
+            if (GetTeamHp < Menu.Item("percentage2").GetValue<Slider>().Value)
             {
                 R.Cast();
             }
@@ -284,7 +284,6 @@ namespace Vomar_Soraka
             drawingMenu.AddItem(new MenuItem("drawW", "Draw W").SetValue(true));
             drawingMenu.AddItem(new MenuItem("drawE", "Draw E").SetValue(true));
             Menu.AddSubMenu(drawingMenu);
-			Menu.AddSubMenu(healingMenu);
             var healingMenu = new Menu("Healing", "vHealing");
 			healingMenu.AddItem(new MenuItem("autoW", "Auto use W.").SetValue(true));
 			healingMenu.AddItem(new MenuItem("autoR", "Auto use R.").SetValue(true));
