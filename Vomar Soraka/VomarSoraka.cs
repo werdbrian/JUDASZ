@@ -69,18 +69,18 @@ namespace Vomar_Soraka
             {
                 case Orbwalking.OrbwalkingMode.Mixed:
                     Harass();
-		    LaneFarm();
-		    JungleFarm();
+					LaneFarm();
+					JungleFarm();
                     break;
                 case Orbwalking.OrbwalkingMode.Combo:
                     Combo();
                     break;
-		case Orbwalking.OrbwalkingMode.LaneClear:
-		    LaneFarm();
-		    JungleFarm();
+				case Orbwalking.OrbwalkingMode.LaneClear:
+					LaneFarm();
+					JungleFarm();
                     break;					
             }
-	    if (Menu.Item("SmartKs").GetValue<bool>())
+			if (Menu.Item("SmartKs").GetValue<bool>())
             {
                 SmartKs();
             }
@@ -146,7 +146,6 @@ namespace Vomar_Soraka
             {
                 return;
             }
-            
             if (useQ && Q.IsReady())
             {
                 Q.Cast(target, Packets);
@@ -206,24 +205,24 @@ namespace Vomar_Soraka
                 }
             }
         }
-	private static void LaneFarm()
+		private static void LaneFarm()
         {
-	    if (Menu.Item("UseQLane").GetValue<bool>() && Q.IsReady())
-		{
-			var laneMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
-			List<Vector2> minionerinos2 =
-	(from minions in laneMinions select minions.Position.To2D()).ToList();
-			var ePos2 = MinionManager.GetBestCircularFarmLocation(minionerinos2, Q.Width, Q.Range).Position;
-			if (ePos2.Distance(ObjectManager.Player.Position.To2D()) < Q.Range && MinionManager.GetBestCircularFarmLocation(minionerinos2, Q.Width, Q.Range).MinionsHit > 0)
+			if (Menu.Item("UseQLane").GetValue<bool>() && Q.IsReady())
 			{
-			Q.Cast(ePos2, Packets);
+				var laneMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
+				List<Vector2> minionerinos2 =
+		(from minions in laneMinions select minions.Position.To2D()).ToList();
+				var ePos2 = MinionManager.GetBestCircularFarmLocation(minionerinos2, Q.Width, Q.Range).Position;
+				if (ePos2.Distance(ObjectManager.Player.Position.To2D()) < Q.Range && MinionManager.GetBestCircularFarmLocation(minionerinos2, Q.Width, Q.Range).MinionsHit > 0)
+				{
+					Q.Cast(ePos2, Packets);
+				}
 			}
 		}
-	    }
 		
-	private static void SmartKs()
+		private static void SmartKs()
         {
-        if (!Menu.Item("smartKS", true).GetValue<bool>())
+            if (!Menu.Item("smartKS", true).GetValue<bool>())
                 return;
 
             foreach (Obj_AI_Hero target in ObjectManager.Get<Obj_AI_Hero>().Where(x => x.IsValidTarget(E.Range) && !x.IsDead && !x.HasBuffOfType(BuffType.Invulnerability)))
@@ -232,7 +231,7 @@ namespace Vomar_Soraka
                 {
                     E.Cast(target);
                 }
-        if (Q.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < Q.Range)
+                if (Q.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < Q.Range)
                 {
                     Q.CastIfHitChanceEquals(target, HitChance.VeryHigh, Packets);
                 }
@@ -270,12 +269,12 @@ namespace Vomar_Soraka
             var comboMenu = new Menu("Combo", "vCombo");
             comboMenu.AddItem(new MenuItem("useQ", "Use Q").SetValue(true));
             comboMenu.AddItem(new MenuItem("useE", "Use E").SetValue(true));
-	    comboMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
+			comboMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
             Menu.AddSubMenu(comboMenu);
-	    var farmMenu = new Menu("Farm", "vFarm");
+			var farmMenu = new Menu("Farm", "vFarm");
             farmMenu.AddItem(new MenuItem("UseQJungle", "Use Q Jungle").SetValue(true));
             farmMenu.AddItem(new MenuItem("UseQLane", "Use Q Lane").SetValue(true));			
-	    Menu.AddSubMenu(farmMenu);
+			Menu.AddSubMenu(farmMenu);
             var harassMenu = new Menu("Harass", "vHarass");
             harassMenu.AddItem(new MenuItem("useQHarass", "Use Q").SetValue(true));
             harassMenu.AddItem(new MenuItem("useEHarass", "Use E").SetValue(true));
@@ -285,22 +284,26 @@ namespace Vomar_Soraka
             drawingMenu.AddItem(new MenuItem("drawW", "Draw W").SetValue(true));
             drawingMenu.AddItem(new MenuItem("drawE", "Draw E").SetValue(true));
             Menu.AddSubMenu(drawingMenu);
-	    Menu.AddSubMenu(healingMenu);
+			Menu.AddSubMenu(healingMenu);
             var healingMenu = new Menu("Healing", "vHealing");
-	    healingMenu.AddItem(new MenuItem("autoW", "Auto use W.").SetValue(true));
-	    healingMenu.AddItem(new MenuItem("autoR", "Auto use R.").SetValue(true));
-	    healingMenu.AddItem(new MenuItem("useTeamfightUltimate", "Auto teamfight R.").SetValue(true));
-	    healingMenu.AddItem(new MenuItem("percentage2", "Auto R under team %").SetValue(new Slider(60, 1)));
+			healingMenu.AddItem(new MenuItem("autoW", "Auto use W.").SetValue(true));
+			healingMenu.AddItem(new MenuItem("autoR", "Auto use R.").SetValue(true));
+			healingMenu.AddItem(new MenuItem("useTeamfightUltimate", "Auto teamfight R.").SetValue(true));
+			healingMenu.AddItem(new MenuItem("percentage2", "Auto R under team %").SetValue(new Slider(60, 1)));
             healingMenu.AddItem(new MenuItem("autoWPercent", "Auto W under %").SetValue(new Slider(50, 1)));
             healingMenu.AddItem(new MenuItem("autoWHealth", "My Health Percent").SetValue(new Slider(40, 1)));
-	    healingMenu.AddItem(new MenuItem("autoRPercent", "Auto R under %").SetValue(new Slider(40, 1)));
-	    Menu.AddSubMenu(healingMenu);
+			healingMenu.AddItem(new MenuItem("autoRPercent", "Auto R under %").SetValue(new Slider(40, 1)));
+			Menu.AddSubMenu(healingMenu);
             var miscMenu = new Menu("Misc", "vMisc");
             miscMenu.AddItem(new MenuItem("packets", "Use Packets").SetValue(true));
             miscMenu.AddItem(new MenuItem("AntiGapCloser", "E on Gapcloser").SetValue(true));
             miscMenu.AddItem(new MenuItem("InterruptSpells", "Use E to Interrupt").SetValue(true));
             Menu.AddSubMenu(miscMenu);
             Menu.AddToMainMenu();
+        }
+        public static void PrintChat(string msg)
+        {
+            Game.PrintChat("<font color='#3492EB'>Vomars Soraka:</font> <font color='#FFFFFF'>" + msg + "</font>");
         }
     }
 }
