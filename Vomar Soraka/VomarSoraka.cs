@@ -39,8 +39,8 @@ namespace Vomar_Soraka
             Q.SetSkillshot(0.5f, 300, 1750, false, SkillshotType.SkillshotCircle);
             E.SetSkillshot(0.5f, 70f, 1750, false, SkillshotType.SkillshotCircle);
             CreateMenu();
-            Interrupter2.OnInterruptableTarget += InterrupterOnOnPossibleToInterrupt;
-            AntiGapcloser.OnEnemyGapcloser += AntiGapcloserOnOnEnemyGapcloser;
+            AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
+            Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
             Game.OnUpdate += GameOnOnGameUpdate;
             Drawing.OnDraw += DrawingOnOnDraw;
         }
@@ -174,36 +174,23 @@ namespace Vomar_Soraka
                 E.Cast(target, Packets);
             }
         }
-        private static void AntiGapcloserOnOnEnemyGapcloser(ActiveGapcloser gapcloser)
+
+		private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            var unit = gapcloser.Sender;
-            if (Menu.Item("useQGapcloser").GetValue<bool>() && unit.IsValidTarget(Q.Range) && Q.IsReady())
-            {
-                Q.Cast(unit, Packets);
-            }
-            if (Menu.Item("useEGapcloser").GetValue<bool>() && unit.IsValidTarget(E.Range) && E.IsReady())
-            {
-                E.Cast(unit, Packets);
-            }
+            if (!Menu.Item("AntiGapCloser").GetValue<bool>() || !CSpell.E.CanCast(gapcloser.Sender))
+                return;
+
+            CSpell.E.Cast(gapcloser.Sender);
         }
-        private static void InterrupterOnOnPossibleToInterrupt(Obj_AI_Hero sender, Interrupter2.InterruptableTargetEventArgs args)
+
+        private static void Interrupter2_OnInterruptableTarget(Obj_AI_Hero sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            var unit = sender;
-            var spell = args;
-            if (Menu.Item("eInterrupt").GetValue<bool>() == false || spell.DangerLevel != Interrupter2.DangerLevel.High)
-            {
+            if (!Menu.Item("InterruptSpells").GetValue<bool>() || !CSpell.E.CanCast(sender) || args.DangerLevel != Interrupter2.DangerLevel.High)
                 return;
-            }
-            if (!unit.IsValidTarget(E.Range))
-            {
-                return;
-            }
-            if (!E.IsReady())
-            {
-                return;
-            }
-            E.Cast(unit, Packets);
+
+            CSpell.E.Cast(sender);
         }
+		
 		private static void JungleFarm()
         {
             if (Menu.Item("UseQJungle").GetValue<bool>() && Q.IsReady())
@@ -246,47 +233,71 @@ namespace Vomar_Soraka
                 }
                 if (Q.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < Q.Range)
                 {
-                    Q.Cast(target);
+                    Q.CastIfHitChanceEquals(target, HitChance.VeryHigh, Packets);
                 }
             }
         }
+		
+		private static double GetTeamHp
+        {
+            get
+            {
+                return HeroManager.Allies.Where(allies => allies.IsValidTarget(float.MaxValue, false)).Select(allies => allies.HealthPercentage()).FirstOrDefault();
+            }
+        }
+
+        internal static void TeamfightUltimate()
+        {
+            if (!CConfig.ConfigMenu.Item("useTeamfightUltimate").GetValue<bool>() || !R.IsReady())
+                return;
+
+            if (GetTeamHp < CConfig.ConfigMenu.Item("percentage2").GetValue<Slider>().Value)
+            {
+                R.Cast();
+            }
+        }
+		
         private static void CreateMenu()
         {
             Menu = new Menu("Vomar Soraka", "vSoraka", true);
             var tsMenu = new Menu("Target Selector", "ssTS");
             TargetSelector.AddToMenu(tsMenu);
             Menu.AddSubMenu(tsMenu);
-            var orbwalkingMenu = new Menu("Orbwalking", "ssOrbwalking");
+            var orbwalkingMenu = new Menu("Orbwalking", "vOrbwalking");
             Orbwalker = new Orbwalking.Orbwalker(orbwalkingMenu);
             Menu.AddSubMenu(orbwalkingMenu);
-            var comboMenu = new Menu("Combo", "ssCombo");
+            var comboMenu = new Menu("Combo", "vCombo");
             comboMenu.AddItem(new MenuItem("useQ", "Use Q").SetValue(true));
             comboMenu.AddItem(new MenuItem("useE", "Use E").SetValue(true));
+			comboMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
             Menu.AddSubMenu(comboMenu);
-			var farmMenu = new Menu("Farm", "Farmm");
+			var farmMenu = new Menu("Farm", "vFarm");
             farmMenu.AddItem(new MenuItem("UseQJungle", "Use Q Jungle").SetValue(true));
             farmMenu.AddItem(new MenuItem("UseQLane", "Use Q Lane").SetValue(true));			
-            Menu.AddSubMenu(farmMenu);
-            var harassMenu = new Menu("Harass", "ssHarass");
+			Menu.AddSubMenu(farmMenu);
+            var harassMenu = new Menu("Harass", "vHarass");
             harassMenu.AddItem(new MenuItem("useQHarass", "Use Q").SetValue(true));
             harassMenu.AddItem(new MenuItem("useEHarass", "Use E").SetValue(true));
             Menu.AddSubMenu(harassMenu);
-            var drawingMenu = new Menu("Drawing", "ssDrawing");
+            var drawingMenu = new Menu("Drawing", "vDrawing");
             drawingMenu.AddItem(new MenuItem("drawQ", "Draw Q").SetValue(true));
             drawingMenu.AddItem(new MenuItem("drawW", "Draw W").SetValue(true));
             drawingMenu.AddItem(new MenuItem("drawE", "Draw E").SetValue(true));
             Menu.AddSubMenu(drawingMenu);
-            var miscMenu = new Menu("Misc", "ssMisc");
+			Menu.AddSubMenu(healingMenu);
+            var healingMenu = new Menu("Healing", "vHealing");
+			healingMenu.AddItem(new MenuItem("autoW", "Auto use W.").SetValue(true));
+			healingMenu.AddItem(new MenuItem("autoR", "Auto use R.").SetValue(true));
+			healingMenu.AddItem(new MenuItem("useTeamfightUltimate", "Auto teamfight R.").SetValue(true));
+			healingMenu.AddItem(new MenuItem("percentage2", "Auto R under team %").SetValue(new Slider(60, 1)));
+            healingMenu.AddItem(new MenuItem("autoWPercent", "Auto W under %").SetValue(new Slider(50, 1)));
+            healingMenu.AddItem(new MenuItem("autoWHealth", "My Health Percent").SetValue(new Slider(40, 1)));
+			healingMenu.AddItem(new MenuItem("autoRPercent", "Auto R under %").SetValue(new Slider(40, 1)));
+			Menu.AddSubMenu(healingMenu);
+            var miscMenu = new Menu("Misc", "vMisc");
             miscMenu.AddItem(new MenuItem("packets", "Use Packets").SetValue(true));
-            miscMenu.AddItem(new MenuItem("useQGapcloser", "Q on Gapcloser").SetValue(true));
-            miscMenu.AddItem(new MenuItem("useEGapcloser", "E on Gapcloser").SetValue(true));
-            miscMenu.AddItem(new MenuItem("autoW", "Auto use W").SetValue(true));
-            miscMenu.AddItem(new MenuItem("autoWPercent", "% Percent").SetValue(new Slider(50, 1)));
-            miscMenu.AddItem(new MenuItem("autoWHealth", "My Health Percent").SetValue(new Slider(30, 1)));
-            miscMenu.AddItem(new MenuItem("autoR", "Auto use R").SetValue(true));
-			miscMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
-            miscMenu.AddItem(new MenuItem("autoRPercent", "% Percent").SetValue(new Slider(15, 1)));
-            miscMenu.AddItem(new MenuItem("eInterrupt", "Use E to Interrupt").SetValue(true));
+            miscMenu.AddItem(new MenuItem("AntiGapCloser", "E on Gapcloser").SetValue(true));
+            miscMenu.AddItem(new MenuItem("InterruptSpells", "Use E to Interrupt").SetValue(true));
             Menu.AddSubMenu(miscMenu);
             Menu.AddToMainMenu();
         }
