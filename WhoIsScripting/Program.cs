@@ -1,12 +1,6 @@
 using System;
-using System.Collections;
-using System.Linq;
-using Color = System.Drawing.Color;
 using System.Collections.Generic;
-using System.Threading;
 using LeagueSharp;
-using LeagueSharp.Common;
-using SharpDX;
 
 namespace WhoIsScripting
 {
@@ -24,6 +18,7 @@ namespace WhoIsScripting
         private static List<Hero> _heroList;
         private static TimeSpan _ts;
         private static DateTime _start;
+		public static Menu Menu;
         private static void Main(string[] args)
         {
             Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
