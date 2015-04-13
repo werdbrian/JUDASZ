@@ -1,6 +1,12 @@
 using System;
+using System.Collections;
+using System.Linq;
+using Color = System.Drawing.Color;
 using System.Collections.Generic;
+using System.Threading;
 using LeagueSharp;
+using LeagueSharp.Common;
+using SharpDX;
 
 namespace WhoIsScripting
 {
