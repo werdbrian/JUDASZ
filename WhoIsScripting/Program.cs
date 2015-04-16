@@ -12,7 +12,7 @@ namespace WhoIsScripting
     }
     internal class Program
     {
-		private static Menu Menu;
+		public static Menu Menu;
         private static bool _lookUp;
         private static bool _isDetecting;
         private static int _lastTick;
