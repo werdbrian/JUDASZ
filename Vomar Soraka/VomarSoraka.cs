@@ -175,14 +175,22 @@ namespace Vomar_Soraka
             }
         }
 		
-		static HitChance WHitChance()
-			{
-			var WHC = Menu.Item("WHitChance").GetValue<StringList>().SelectedIndex;
-			if (WHC == 1) { return HitChance.Low; }
-			else if (WHC == 2) { return HitChance.Medium; }
-			else if (WHC == 3) { return HitChance.High; }
-			else if (WHC == 4) { return HitChance.VeryHigh; }
-			}
+        public static HitChance GetHitchance()
+        {
+            switch (PennyJinx.Menu.Item("vHitchance").GetValue<StringList>().SelectedIndex)
+            {
+                case 0:
+                    return HitChance.Low;
+                case 1:
+                    return HitChance.Medium;
+                case 2:
+                    return HitChance.High;
+                case 3:
+                    return HitChance.VeryHigh;
+                default:
+                    return HitChance.Medium;
+            }
+        }
 
 		private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
@@ -244,7 +252,11 @@ namespace Vomar_Soraka
                 }
                 if (Q.IsKillable(target) && ObjectManager.Player.Distance(target.Position) < Q.Range)
                 {
-                    VomarSoraka.Q.CastIfHitchanceEquals(target, HitChance.High);
+					var prediction = Q.GetPrediction(target);
+                    if (prediction.Hitchance >= HitChance.High)
+					{
+                    Q.Cast(target);
+					}
                 }
             }
         }
@@ -281,7 +293,7 @@ namespace Vomar_Soraka
             comboMenu.AddItem(new MenuItem("useQ", "Use Q").SetValue(true));
             comboMenu.AddItem(new MenuItem("useE", "Use E").SetValue(true));
 			comboMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
-			comboMenu.AddItem(new MenuItem("WHitChance", "Hitchance").SetValue(new StringList(new[] { "Low", "Medium", "High", "Very High" }, 2)));			
+			comboMenu.AddItem(new MenuItem("vHitchance", "Hitchance").SetValue(new StringList(new[] { "Low", "Medium", "High", "Very High" }, 2)));			
             Menu.AddSubMenu(comboMenu);
 			var farmMenu = new Menu("Farm", "vFarm");
             farmMenu.AddItem(new MenuItem("UseQJungle", "Use Q Jungle").SetValue(true));
