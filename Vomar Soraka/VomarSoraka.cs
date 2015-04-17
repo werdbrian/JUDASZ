@@ -255,7 +255,7 @@ namespace Vomar_Soraka
 					var prediction = Q.GetPrediction(target);
                     if (prediction.Hitchance >= HitChance.High)
 					{
-                    Q.Cast(target);
+                    VomarSoraka.Q.CastIfHitchanceEquals(target, HitChance);
 					}
                 }
             }
