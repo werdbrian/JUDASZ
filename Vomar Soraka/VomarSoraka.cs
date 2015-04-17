@@ -177,7 +177,7 @@ namespace Vomar_Soraka
 		
         public static HitChance GetHitchance()
         {
-            switch (PennyJinx.Menu.Item("vHitchance").GetValue<StringList>().SelectedIndex)
+            switch (Menu.Item("vHitchance").GetValue<StringList>().SelectedIndex)
             {
                 case 0:
                     return HitChance.Low;
