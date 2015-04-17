@@ -177,13 +177,11 @@ namespace Vomar_Soraka
 		
 		static HitChance WHitChance()
 			{
-			var WHC = Menu.Item("WHitChance").GetValue<Slider>().Value;
+			var WHC = Menu.Item("WHitChance").GetValue<StringList>().SelectedIndex;
 			if (WHC == 1) { return HitChance.Low; }
-			else if (WHC == 2) { return HitChance.Low; }
-			else if (WHC == 3) { return HitChance.Medium; }
-			else if (WHC == 4) { return HitChance.High; }
-			else if (WHC == 5) { return HitChance.VeryHigh; }
-			else { return HitChance.High; }
+			else if (WHC == 2) { return HitChance.Medium; }
+			else if (WHC == 3) { return HitChance.High; }
+			else if (WHC == 4) { return HitChance.VeryHigh; }
 			}
 
 		private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
@@ -204,7 +202,8 @@ namespace Vomar_Soraka
 		
 		private static void JungleFarm()
         {
-            if (Menu.Item("UseQJungle").GetValue<bool>() && Q.IsReady())
+            if (Menu.Item("UseQJungle").GetValue<bool>() && Q.IsReady() && (Menu.Item("ManaSliderFarm").GetValue<Slider>().Value >
+                ObjectManager.Player.Mana / ObjectManager.Player.MaxMana * 100))
             {
                 var JungleWMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
                 List<Vector2> minionerinos2 =
@@ -218,7 +217,8 @@ namespace Vomar_Soraka
         }
 		private static void LaneFarm()
         {
-			if (Menu.Item("UseQLane").GetValue<bool>() && Q.IsReady())
+			if (Menu.Item("UseQLane").GetValue<bool>() && Q.IsReady() && (Menu.Item("ManaSliderFarm").GetValue<Slider>().Value >
+                ObjectManager.Player.Mana / ObjectManager.Player.MaxMana * 100))
 			{
 				var laneMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
 				List<Vector2> minionerinos2 =
@@ -281,11 +281,12 @@ namespace Vomar_Soraka
             comboMenu.AddItem(new MenuItem("useQ", "Use Q").SetValue(true));
             comboMenu.AddItem(new MenuItem("useE", "Use E").SetValue(true));
 			comboMenu.AddItem(new MenuItem("smartKS", "Use Smart KS System", true).SetValue(true));
-			comboMenu.AddItem(new MenuItem("WHitChance", "Hitchance to KS with Q").SetValue(new Slider(5, 1)));			
+			comboMenu.AddItem(new MenuItem("WHitChance", "Hitchance").SetValue(new StringList(new[] { "Low", "Medium", "High", "Very High" }, 2)));			
             Menu.AddSubMenu(comboMenu);
 			var farmMenu = new Menu("Farm", "vFarm");
             farmMenu.AddItem(new MenuItem("UseQJungle", "Use Q Jungle").SetValue(true));
-            farmMenu.AddItem(new MenuItem("UseQLane", "Use Q Lane").SetValue(true));			
+            farmMenu.AddItem(new MenuItem("UseQLane", "Use Q Lane").SetValue(true));
+			farmMenu.AddItem(new MenuItem("ManaSliderFarm", "Mana To Farm").SetValue(new Slider(25, 100, 0)));
 			Menu.AddSubMenu(farmMenu);
             var harassMenu = new Menu("Harass", "vHarass");
             harassMenu.AddItem(new MenuItem("useQHarass", "Use Q").SetValue(true));
