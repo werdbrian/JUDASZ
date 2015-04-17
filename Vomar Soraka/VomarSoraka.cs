@@ -175,7 +175,7 @@ namespace Vomar_Soraka
             }
         }
 		
-        public static HitChance GetHitchance()
+        public static oHitChance GetHitchance()
         {
             switch (Menu.Item("vHitchance").GetValue<StringList>().SelectedIndex)
             {
@@ -255,7 +255,7 @@ namespace Vomar_Soraka
 					var prediction = Q.GetPrediction(target);
                     if (prediction.Hitchance >= HitChance.High)
 					{
-                    VomarSoraka.Q.CastIfHitchanceEquals(target, HitChance);
+                    VomarSoraka.Q.CastIfHitchanceEquals(target, oHitChance);
 					}
                 }
             }
