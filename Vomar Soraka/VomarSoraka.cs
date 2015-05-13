@@ -210,8 +210,7 @@ namespace Vomar_Soraka
 		
 		private static void JungleFarm()
         {
-            if (Menu.Item("UseQJungle").GetValue<bool>() && Q.IsReady() && (Menu.Item("ManaSliderFarm").GetValue<Slider>().Value >
-                ObjectManager.Player.Mana / ObjectManager.Player.MaxMana * 100))
+            if (Menu.Item("UseQJungle").GetValue<bool>() && Q.IsReady() )
             {
                 var JungleWMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
                 List<Vector2> minionerinos2 =
@@ -225,8 +224,7 @@ namespace Vomar_Soraka
         }
 		private static void LaneFarm()
         {
-			if (Menu.Item("UseQLane").GetValue<bool>() && Q.IsReady() && (Menu.Item("ManaSliderFarm").GetValue<Slider>().Value >
-                ObjectManager.Player.Mana / ObjectManager.Player.MaxMana * 100))
+			if (Menu.Item("UseQLane").GetValue<bool>() && Q.IsReady())
 			{
 				var laneMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
 				List<Vector2> minionerinos2 =
